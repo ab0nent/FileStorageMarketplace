@@ -1,9 +1,10 @@
-angular.module('mainPage').component('mainPage', {
-    templateUrl: 'app/main-page/main-page.template.html',
-    controller: [
-        function MainPageController() {
+angular.module('configPage').component('configPage', {
+    templateUrl: 'app/config-page/config-page.template.html',
+    controller: ['$scope',
+        function MainPageController($scope) {
+
             var contractAddress = '0x73403595cF2d95640e9d6eB4C6fa32E03b262D6F';
-            var password = "DctvG1pltw1";
+            var password = "";
 
             var web3 = new Web3();
             var httpProvider = 'http://10.0.2.2:8545/';
@@ -14,6 +15,38 @@ angular.module('mainPage').component('mainPage', {
             }
 
             var coinbase = web3.eth.coinbase;
+            $scope.coinbase = coinbase;
+
+
+
+            function checkAllBalances() {
+                var totalBal = 0;
+                for (var acctNum in web3.eth.accounts) {
+                    var acct = web3.eth.accounts[acctNum];
+                    var acctBal = web3.fromWei(web3.eth.getBalance(acct), "ether");
+                    totalBal += parseFloat(acctBal);
+                    console.log("  eth.accounts[" + acctNum + "]: \t" + acct + " \tbalance: " + acctBal + " ether");
+                }
+                console.log("  Total balance: " + totalBal + " ether");
+            }
+
+            checkAllBalances();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             var balance = web3.eth.getBalance(coinbase).toNumber();
 
             console.log(coinbase);
@@ -80,8 +113,8 @@ angular.module('mainPage').component('mainPage', {
             console.log(getSalary());
             console.log(getTotal());
             // console.log(setSalary(50));
-            console.log(getSalary());
-            console.log(getTotal());
+            // console.log(getSalary());
+            // console.log(getTotal());
         }
     ]
 });
