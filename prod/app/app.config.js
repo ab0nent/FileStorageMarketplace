@@ -7,6 +7,10 @@ config(['$locationProvider', '$routeProvider',
         when('/main', {
             template: '<main-page></main-page>'
         }).
+        when('/config', {
+            template: '<config-page></config-page>'
+        }).
+
         otherwise('/main');
     }
 ]);

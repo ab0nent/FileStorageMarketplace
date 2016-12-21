@@ -1,1 +1,1 @@
-angular.module('fsmApp', ['ngRoute','mainPage']);
+angular.module('fsmApp', ['ngRoute','configPage']);
