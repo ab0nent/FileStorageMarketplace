@@ -1,1 +1,13 @@
-angular.module('fsmApp', ['ngRoute','mainPage']);
+angular
+    .module('fsmApp',
+        [
+            'core',
+            'ngRoute',
+            'mainPage',
+            'accountsPage',
+            'contractPage'
+        ]
+    );
+
+
+
