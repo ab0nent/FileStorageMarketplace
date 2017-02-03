@@ -1,8 +1,8 @@
 angular.module('contractPage')
     .component('contractPage', {
         templateUrl: 'app/contract-page/contract-page.template.html',
-        controller: ['appConfig', '$interval',
-            function ContractPageController(appConfig, $interval) {
+        controller: ['appConfig',
+            function ContractPageController(appConfig) {
 
                 var web3 = new Web3();
 
@@ -14,32 +14,43 @@ angular.module('contractPage')
 
                 var coinbase = web3.eth.coinbase;
                 var contract = web3.eth.contract(appConfig.abi).at(appConfig.contractAddress);
-
                 var self = this;
 
-                self.setSalary = setSalary;
-                $interval(function () {
-                    self.salary = getSalary();
-                    self.total = getTotal();
-                },3000);
+                self.gboResult = {  //result of getBuyOrder function
+                    id: '',
+                    DO: '',
+                    volumeGB: '',
+                    pricePerGB: '',
+                    weiInitialAmount: ''
+                };
 
-                function setSalary(account) {
-                    unlockAccount(account.password);
-                    contract.setSalary(account.newSalary, {from: coinbase, value: web3.toWei(0, 'ether')});
+                self.unlockAccount = unlockAccount;
+                self.getBuyOrder = getBuyOrder;
+                self.createBuyOrder = createBuyOrder;
+
+                function getBuyOrder(index) {
+                    var gboArr = contract.getBuyOrder(index);
+                    self.gboResult.id = parseFloat(gboArr[0]);
+                    self.gboResult.DO = gboArr[1];
+                    self.gboResult.volumeGB = parseFloat(gboArr[2]);
+                    self.gboResult.pricePerGB = parseFloat(gboArr[3]);
+                    self.gboResult.weiInitialAmount = parseFloat(gboArr[4]);
                 }
 
-                function getSalary() {
-                    return contract.getSalary();
-                }
-
-                function getTotal() {
-                    return contract.getTotal();
+                function createBuyOrder(cbo) {
+                    var transactionId = contract
+                        .createBuyOrder
+                        .sendTransaction(
+                            cbo.volumeGB,
+                            cbo.pricePerGB,
+                            {from: coinbase, value: web3.toWei(0, 'ether'), gas: 1000000}
+                        );
+                    console.log(transactionId);
                 }
 
                 function unlockAccount(pwd) {
-                    web3.personal.unlockAccount(coinbase, pwd, 1000);
+                    web3.personal.unlockAccount(coinbase, pwd, 10000);
                 }
             }
-
         ]
     });

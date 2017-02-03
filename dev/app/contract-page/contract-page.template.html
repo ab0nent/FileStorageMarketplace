@@ -1,14 +1,33 @@
 <h1>Contract</h1>
 
-<h4>Salary: {{$ctrl.salary}}</h4>
-<h4>Total: {{$ctrl.total}}</h4>
-
 <label>Account password:
-    <input type="password" ng-model="account.password"/>
+    <input type="password" ng-model="password"/>
 </label>
-<br>
-<label>New salary:
-    <input type="text" ng-model="account.newSalary"/>
+<button ng-click="$ctrl.unlockAccount(password); password=''; ">Unlock account</button>
+<hr>
+
+<label>volumeGB:
+    <input type="number" ng-model="cbo.volumeGB"/>
 </label>
-<br>
-<button ng-click="$ctrl.setSalary(account)">Set salary</button>
+<label>pricePerGB:
+    <input type="number" ng-model="cbo.pricePerGB"/>
+</label>
+<button ng-click="$ctrl.createBuyOrder(cbo);">createBuyOrder</button>
+<hr>
+
+<label>Get buy order by index:
+    <input type="number" ng-model="orderIndex" min="0">
+</label>
+
+<button ng-click="$ctrl.getBuyOrder(orderIndex);">getBuyOrder</button>
+<ul>
+    <li>id: {{$ctrl.gboResult.id}}</li>
+    <li>DO: {{$ctrl.gboResult.DO}}</li>
+    <li>volumeGB: {{$ctrl.gboResult.volumeGB}}</li>
+    <li>pricePerGB: {{$ctrl.gboResult.pricePerGB}}</li>
+    <li>weiInitialAmount: {{$ctrl.gboResult.weiInitialAmount}}</li>
+</ul>
+<hr>
+
+
+
